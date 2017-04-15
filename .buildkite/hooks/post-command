@@ -1,0 +1,5 @@
+# echo "This is an example of a post-command hook from .buildkite/hooks/post-command"
+XML_FILENAME=`ls *.xml`
+HTML_FILENAME=`echo $XML_FILENAME | sed s/'\.xml'/'\.html'/`
+
+junit2html -i $XML_FILENAME -o $HTML_FILENAME -to kho@virtru.com
