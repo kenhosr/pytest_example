@@ -1,24 +1,26 @@
 #!/bin/bash
+# disable var strictness
 set +u
 
 
 # if XML_REPORT not set, treat the latest modified xml file as junit xml report
-if [ -z "$XML_REPORT" ]; then
+if [ -z $XML_REPORT ]; then
     XML_REPORT=`ls -t *.xml | head -1`
-    echo "+++ No env var XML_REPORT set, use latest modified xml file $XML_REPORT"
+    echo "+++ No env var XML_REPORT set, use latest modified xml=$XML_REPORT"
+else
+    echo "User defined XML_REPORT=$XML_REPORT
 fi
 
 if [ ! -f $XML_REPORT ]; then
-    echo "User defined XML_REPORT $XML_REPORT not found in $PWD"
-else
-    echo "User defined XML_REPORT $XML_REPORT found in $PWD"
+    echo "+++ User defined XML_REPORT $XML_REPORT not found in $PWD, will NOT send test report"
+    exit 1
 fi
 
 # set HTML report file name
 HTML_REPORT=`echo $XML_REPORT | sed s/'\.xml'/'\.html'/`
 
 # if RECIPIENTS not set, default to "dcrowley@virtru.com kho@virtru.com"
-if [ -z "$RECIPIENTS" ]; then
+if [ -z $RECIPIENTS ]; then
     RECIPIENTS="dcrowley@virtru.com kho@virtru.com"
     echo "+++ No env var RECIPIENTS set, use default $RECIPIENTS"
 else
