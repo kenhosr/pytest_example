@@ -1,5 +1,26 @@
-# echo "This is an example of a post-command hook from .buildkite/hooks/post-command"
-XML_FILENAME=`ls *.xml`
-HTML_FILENAME=`echo $XML_FILENAME | sed s/'\.xml'/'\.html'/`
+# if XML_REPORT not set, treat the latest modified xml file as junit xml report
+if [ -z $XML_REPORT ]; then
+    XML_REPORT=`ls -t *.xml | head -1`
+    echo "No env var XML_REPORT set, use latest modified xml file $XML_REPORT"
+fi
 
-junit2html -i $XML_FILENAME -o $HTML_FILENAME -to kho@virtru.com
+if [ ! -f $XML_REPORT ]; then
+    echo "User defined XML_REPORT $XML_REPORT not found in $PWD"
+else
+    echo "User defined XML_REPORT $XML_REPORT found in $PWD"
+fi
+
+# set HTML report file name
+HTML_REPORT=`echo $XML_REPORT | sed s/'\.xml'/'\.html'/`
+
+if [ -z $RECIPIENTS ]; then
+    RECIPIENTS="dcrowley@virtru.com kho@virtru.com"
+    echo "No env var RECIPIENTS set, use default $RECIPIENTS"
+else
+    echo "User defined RECIPIENTS=$RECIPIENTS"
+fi
+
+
+echo "+++ prepare to send test report $HTML_REPORT to $RECIPIENTS"
+
+junit2html -i $XML_REPORT -o $HTML_REPORT -to $RECIPIENTS
