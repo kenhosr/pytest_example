@@ -1,7 +1,7 @@
 # if XML_REPORT not set, treat the latest modified xml file as junit xml report
 if [ -z $XML_REPORT ]; then
     XML_REPORT=`ls -t *.xml | head -1`
-    echo "No env var XML_REPORT set, use latest modified xml file $XML_REPORT"
+    echo "+++ No env var XML_REPORT set, use latest modified xml file $XML_REPORT"
 fi
 
 if [ ! -f $XML_REPORT ]; then
@@ -13,13 +13,13 @@ fi
 # set HTML report file name
 HTML_REPORT=`echo $XML_REPORT | sed s/'\.xml'/'\.html'/`
 
+# if RECIPIENTS not set, default to "dcrowley@virtru.com kho@virtru.com"
 if [ -z $RECIPIENTS ]; then
     RECIPIENTS="dcrowley@virtru.com kho@virtru.com"
-    echo "No env var RECIPIENTS set, use default $RECIPIENTS"
+    echo "+++ No env var RECIPIENTS set, use default $RECIPIENTS"
 else
     echo "User defined RECIPIENTS=$RECIPIENTS"
 fi
-
 
 echo "+++ prepare to send test report $HTML_REPORT to $RECIPIENTS"
 
