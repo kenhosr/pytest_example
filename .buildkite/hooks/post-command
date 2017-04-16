@@ -1,3 +1,7 @@
+#!/bin/bash
+set +u
+
+
 # if XML_REPORT not set, treat the latest modified xml file as junit xml report
 if [ -z "$XML_REPORT" ]; then
     XML_REPORT=`ls -t *.xml | head -1`
